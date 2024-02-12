@@ -25,16 +25,19 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Filtrar as faixas de vídeo que correspondem aos critérios desejados
             const foundTracks = tracks.filter(track => {
                 const capabilities = track.getCapabilities();
-                return capabilities.facingMode === 'environment' && capabilities.focusMode.includes('continuous');
+                return capabilities.facingMode == 'environment' || capabilities.focusMode.includes('continuous');
             });
 
             // Se uma faixa com foco correto for encontrada, atualize cameraSelectId
             if (foundTracks.length > 0) {
-                constraints.video.deviceId = cameraSelectId;
-                await navigator.mediaDevices.getUserMedia(constraints);
+
+                const settings = {
+                    focusMode: 'continuous'
+                };
+                await foundTracks.applyConstraints({ advanced: [settings] });
+                
             }
 
-            console.log(foundTracks);
             videoElement.srcObject = stream;
             currentStream = stream;
         } catch (error) {
