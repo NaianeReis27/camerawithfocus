@@ -35,7 +35,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Verificar se a câmera suporta focusMode contínuo
     async function checkContinuousFocusSupport() {
-        console.log(stream)
+        console.log(streamgit )
+        console.log(stream.getTracks())
         stream.getTracks().forEach(async ele => {
             console.log(ele.getCapabilities())
             if (ele.getCapabilities().focusMode.includes('continuous')) {
