@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             };
 
             if (deviceId) {
-                constraints.video.deviceId = deviceId;
+                constraints.video.deviceId = { exact: deviceId };
             }
 
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -38,10 +38,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.log(videoDevices.length + ' câmeras disponíveis');
 
             for (const device of videoDevices) {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: device.deviceId } });
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: { exact: device.deviceId } } });
                 const tracks = stream.getVideoTracks();
 
                 for (const track of tracks) {
+                    console.log(tracks)
                     if (track && track.getCapabilities && track.getCapabilities().focusMode) {
                         if (track.getCapabilities().focusMode.includes('continuous') && track.getCapabilities().facingMode === "environment"
                         ) {
@@ -52,7 +53,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                         }
                         await accessCamera();
                         return
-
                     }
                 }
 
@@ -61,7 +61,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.error('Error checking continuous focus support: ', error);
         }
     }
-
     // Chamar a função para acessar a câmera e verificar o suporte ao foco contínuo
     await checkContinuousFocusSupport();
 });
