@@ -40,17 +40,21 @@ document.addEventListener("DOMContentLoaded", async () => {
             for (const device of videoDevices) {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: device.deviceId } });
                 const tracks = stream.getVideoTracks();
-                
-                for(const track of tracks){
+
+                for (const track of tracks) {
                     if (track && track.getCapabilities && track.getCapabilities().focusMode) {
-                        if (track.getCapabilities().focusMode.includes('continuous')) {
+                        if (track.getCapabilities().focusMode.includes('continuous') &&  track.getCapabilities().facingMode === "enviroment"
+                        ) {
+                            console.log(track.getCapabilities())
                             console.log('Continuous focus mode is supported by device:', device.label);
                             await accessCamera(device.deviceId);
                             break; // Parar de verificar após encontrar uma câmera compatível
+                        }else{
+                            await accessCamera();
                         }
                     }
                 }
-                
+
             }
         } catch (error) {
             console.error('Error checking continuous focus support: ', error);
