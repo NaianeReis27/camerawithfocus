@@ -51,11 +51,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                     Object.entries(ele.getCapabilities()).forEach(([key, value]) => {
                         const li = document.createElement('li');
                         li.textContent = `${key}: ${value}`;
-                        ul.appendChild(li);
+                        ul2.appendChild(li);
                     });
                 });
 
-                infoCam.append(ul);
+                infoCam.append(ul1);
                 infoCam2.append(ul2);
 
                 videoElement.srcObject = stream;
