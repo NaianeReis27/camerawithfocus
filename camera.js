@@ -49,8 +49,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                             console.log('Continuous focus mode is supported by device:', device.label);
                             await accessCamera(device.deviceId);
                             break;
-                        } else {
-                            await accessCamera();
                         }
                     }
                 }
