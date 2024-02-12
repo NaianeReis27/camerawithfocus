@@ -9,18 +9,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         try {
             const constraints = {
                 video: {
-                    facingMode: 'environment',
-                    focusMode: 'continuous'
+                    facingMode: 'environment'
                 }
             };
 
             if (deviceId) {
                 constraints.video.deviceId = deviceId
             }
-            stream2 = await navigator.mediaDevices.getSupportedConstraints();
+            
             stream = await navigator.mediaDevices.getUserMedia(constraints);
             const tracks = stream.getTracks();
-            console.log("stream2:"+ stream2)
+            console.log("stream2:"+ tracks)
 
             // Parar as faixas da stream anterior, se houver
             if (currentStream) {
@@ -30,6 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             videoElement.srcObject = stream;
             currentStream = stream;
+            
         } catch (error) {
             console.error('Error accessing media devices: ', error);
         }
