@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         const devices = await navigator.mediaDevices.enumerateDevices(ele => console.log(ele));
         const videoDevices = devices.filter(device => device.kind === 'videoinput');
-        
+
         videoDevices.forEach((device, index) => {
 
             const option = document.createElement('option');
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
 
                 infoCam.innerHTML = ''; // Limpar informações anteriores
-                infoCam2.innerHTML = ''; 
+                infoCam2.innerHTML = '';
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
                 const track = stream.getTracks();
                 const ul = document.createElement('ul');
@@ -43,7 +43,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 track.forEach(ele => {
                     Object.entries(ele.getSettings()).forEach(([key, value]) => {
                         const li = document.createElement('li');
-                        li.textContent = `${key}: ${value}`;
+                        const valueString = typeof value === 'object' ? JSON.stringify(value) : value;
+                        li.textContent = `${key}: ${valueString}`;
                         ul.appendChild(li);
                     });
                 });
