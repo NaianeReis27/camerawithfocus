@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const videoElement = document.getElementById('video');
     const cameraSelect = document.getElementById('cameraSelect');
-    const infoCam = document.getElementById('infoCam');
+    const infoCam = document.getElementById('infoCam1');
+    const infoCam2 = document.getElementById('infoCam2');
 
     try {
         const devices = await navigator.mediaDevices.enumerateDevices();
@@ -12,6 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             option.value = device.deviceId;
             option.text = `Camera ${index + 1}`;
             cameraSelect.appendChild(option);
+            
         });
 
         cameraSelect.addEventListener('change', async () => {
@@ -34,10 +36,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
                 const track = stream.getTracks();
-                const ul = document.createElement('ul');
+                const ul1 = document.createElement('ul');
+                const ul2 = document.createElement('ul');
 
                 track.forEach(ele => {
                     Object.entries(ele.getSettings()).forEach(([key, value]) => {
+                        const li = document.createElement('li');
+                        li.textContent = `${key}: ${value}`;
+                        ul1.appendChild(li);
+                    });
+                });
+
+                track.forEach(ele => {
+                    Object.entries(ele.getCapabilities()).forEach(([key, value]) => {
                         const li = document.createElement('li');
                         li.textContent = `${key}: ${value}`;
                         ul.appendChild(li);
@@ -45,6 +56,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 });
 
                 infoCam.append(ul);
+                infoCam2.append(ul2);
 
                 videoElement.srcObject = stream;
             } catch (error) {
