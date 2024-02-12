@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.log(ele.getCapabilities())
             if (ele.getCapabilities().focusMode.includes('continuous')) {
                 console.log(ele.getCapabilities())
-                await accessCamera()
+                await accessCamera(ele.getCapabilities().deviceId)
             }
         });
 
