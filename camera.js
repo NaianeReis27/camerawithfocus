@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 focusMode: 'manual'
             }
         }
-        
+
         try {
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
             const tracks = stream.getTracks();
