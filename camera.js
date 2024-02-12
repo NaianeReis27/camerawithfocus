@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Função para acessar a câmera com base nas restrições
     async function accessCamera(deviceId) {
+        console.log(deviceId)
         try {
             const constraints = {
                 video: {
@@ -37,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         stream.getTracks().forEach(async ele => {
             console.log(ele.getCapabilities())
             if (ele.getCapabilities().focusMode.includes('continuous')) {
-                console.log(ele.getCapabilities())
+                console.log(ele.getCapabilities().deviceId)
                 await accessCamera(ele.getCapabilities().deviceId)
                 return
             }
