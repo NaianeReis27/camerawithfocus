@@ -23,7 +23,19 @@ document.addEventListener("DOMContentLoaded", async () => {
             };
 
             try {
+                infoCam.innerHTML = ''
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                const track = stream.getTracks();
+                const ul = document.createElement('ul');
+                track.forEach(ele => {
+                    Object.entries(ele.getSettings()).forEach(([key, value]) => {
+                        const li = document.createElement('li');
+                        li.textContent = `${key}: ${value}`;
+                        ul.appendChild(li);
+                    });
+                })
+                infoCam.append(ul)
+                const container = document.createElement("h2")
                 videoElement.srcObject = stream;
             } catch (error) {
                 console.error('Error accessing media devices: ', error);
@@ -39,17 +51,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             };
 
             const stream = await navigator.mediaDevices.getUserMedia(defaultConstraints);
-            const track = stream.getTracks();
-            const ul = document.createElement('ul');
-            track.forEach(ele => {
-                Object.entries(ele.getSettings()).forEach(([key, value]) => {
-                    const li = document.createElement('li');
-                    li.textContent = `${key}: ${value}`;
-                    ul.appendChild(li);
-                });
-            })
-            infoCam.append(ul)
-            const container = document.createElement("h2")
+
             videoElement.srcObject = stream;
         } else {
             console.error('No video devices found.');
