@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const constraints = {
             video: {
                 facingMode: 'environment',
-                focus: 'manual'
+                focusMode: 'manual'
             }
         }
         
