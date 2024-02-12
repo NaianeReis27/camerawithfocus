@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const h2 = document.createElement('h2');
         
         stream.getTracks().forEach(async (ele, index, array) => {
-            console.log(array)
+            console.log(array.length + 'cameras disponiveis')
             if (ele.getCapabilities().focusMode.includes('continuous')) {
                 h2.innerText = stream.getTracks()[index].label;
                 await accessCamera(ele.getCapabilities().deviceId)
