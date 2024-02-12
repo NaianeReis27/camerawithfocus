@@ -2,25 +2,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     const videoElement = document.getElementById('video');
     const cameraSelect = document.getElementById('cameraSelect');
     const infoCam = document.getElementById('infoCam');
+    const infoCam2 = document.getElementById('infoCam2');
 
     let currentStream; // Variável para armazenar a stream atual
 
     try {
-        const devices = await navigator.mediaDevices.enumerateDevices();
+        const devices = await navigator.mediaDevices.enumerateDevices(ele => console.log(ele));
         const videoDevices = devices.filter(device => device.kind === 'videoinput');
-
+        
         videoDevices.forEach((device, index) => {
+
             const option = document.createElement('option');
-            option.value = device.deviceId;
+            option.value = device.groupId;
             option.text = `Camera ${index + 1}`;
             cameraSelect.appendChild(option);
         });
 
         cameraSelect.addEventListener('change', async () => {
-            const deviceId = cameraSelect.value;
+            const groupId = cameraSelect.value;
             const constraints = {
                 video: {
-                    deviceId: { exact: deviceId }
+                    groupId: { exact: groupId }
                 }
             };
 
@@ -32,10 +34,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
 
                 infoCam.innerHTML = ''; // Limpar informações anteriores
-
+                infoCam2.innerHTML = ''; 
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
                 const track = stream.getTracks();
                 const ul = document.createElement('ul');
+                const ul2 = document.createElement('ul');
 
                 track.forEach(ele => {
                     Object.entries(ele.getSettings()).forEach(([key, value]) => {
@@ -45,7 +48,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                     });
                 });
 
+                track.forEach(ele => {
+                    Object.entries(ele.getCapabilities()).forEach(([key, value]) => {
+                        const li = document.createElement('li');
+                        li.textContent = `${key}: ${value}`;
+                        ul2.appendChild(li);
+                    });
+                });
+
                 infoCam.append(ul);
+                infoCam2.append(ul2);
 
                 videoElement.srcObject = stream;
                 currentStream = stream; // Atualizar a stream atual
@@ -55,10 +67,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         if (videoDevices.length > 0) {
-            const defaultDeviceId = videoDevices[0].deviceId;
+            const defaultGroupId = videoDevices[0].groupId;
             const defaultConstraints = {
                 video: {
-                    deviceId: { exact: defaultDeviceId }
+                    groupId: { exact: defaultGroupId }
                 }
             };
 
