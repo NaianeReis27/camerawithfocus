@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const videoElement = document.getElementById('video');
     let currentStream;
+    let stream;
 
     // Função para acessar a câmera com base nas restrições
-    async function accessCamera() {
+    async function accessCamera(deviceId) {
         try {
             const constraints = {
                 video: {
@@ -11,7 +12,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
             };
 
-            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            if (deviceId) {
+                constraints.video.deviceId = deviceId
+            }
+
+            stream = await navigator.mediaDevices.getUserMedia(constraints);
             const tracks = stream.getTracks();
 
             // Parar as faixas da stream anterior, se houver
@@ -29,29 +34,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Verificar se a câmera suporta focusMode contínuo
     async function checkContinuousFocusSupport() {
-        const constraints = {
-            video: {
-                facingMode: 'environment',
-                focusMode: 'continuous'
+        stream.getTracks().forEach(async ele => {
+            if (ele.getCapabilities().focusMode.includes('continuous')) {
+                console.log(ele.getCapabilities())
+                await accessCamera()
             }
-        };
+        });
 
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia(constraints);
-            stream.getTracks().forEach(track => track.stop());
-            return true;
-        } catch (error) {
-            return false;
-        }
     }
 
     // Verificar se a câmera suporta focusMode contínuo antes de aplicar as constraints
-    const isContinuousFocusSupported = await checkContinuousFocusSupport();
 
-    if (isContinuousFocusSupported) {
-        await accessCamera();
-    } else {
-        console.error('Continuous focus mode is not supported by the camera.');
-        // Você pode lidar com isso de acordo com sua lógica de fallback
-    }
+
+    await accessCamera();
+    await checkContinuousFocusSupport();
 });
