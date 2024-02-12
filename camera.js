@@ -43,13 +43,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 for (const track of tracks) {
                     if (track && track.getCapabilities && track.getCapabilities().focusMode) {
-                        if (track.getCapabilities().focusMode.includes('continuous') && track.getCapabilities().facingMode == "environment"
+                        if (track.getCapabilities().focusMode.includes('continuous') && track.getCapabilities().facingMode === "environment"
                         ) {
                             console.log(track.getCapabilities())
                             console.log('Continuous focus mode is supported by device:', device.label);
                             await accessCamera(device.deviceId);
-                            break;
+                            return
                         }
+                        await accessCamera();
+                        return
+
                     }
                 }
 
