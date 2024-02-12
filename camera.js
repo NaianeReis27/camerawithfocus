@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Se uma faixa com foco correto for encontrada, atualize cameraSelectId
             if (foundTracks.length > 0) {
                 constraints.video.deviceId = cameraSelectId;
-                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                await navigator.mediaDevices.getUserMedia(constraints);
             }
 
             console.log(foundTracks);
