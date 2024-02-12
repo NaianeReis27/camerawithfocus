@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const videoElement = document.getElementById('video');
-    const cam = document.getElementById('cam');
     let currentStream;
-    let stream;
 
     // Função para acessar a câmera com base nas restrições
     async function accessCamera(deviceId) {
@@ -14,24 +12,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             };
 
             if (deviceId) {
-                constraints.video.deviceId = deviceId
+                constraints.video.deviceId = deviceId;
             }
-            devices = await navigator.mediaDevices.enumerateDevices();
-            
 
-            stream = await navigator.mediaDevices.getUserMedia(constraints);
-            const tracks = stream.getTracks();
-            console.log(devices[1].focusMode , 1)
-            console.log(tracks[0].getCapabilities().focusMode , '2')
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
             // Parar as faixas da stream anterior, se houver
             if (currentStream) {
-                const currentTracks = currentStream.getTracks();
-                currentTracks.forEach(track => track.stop());
+                currentStream.getTracks().forEach(track => track.stop());
             }
 
             videoElement.srcObject = stream;
             currentStream = stream;
-
         } catch (error) {
             console.error('Error accessing media devices: ', error);
         }
@@ -39,22 +31,32 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Verificar se a câmera suporta focusMode contínuo
     async function checkContinuousFocusSupport() {
-        
-        const h2 = document.createElement('h2');
-        
-        stream.getTracks().forEach(async (ele, index, array) => {
-            console.log(array.length + 'cameras disponiveis')
-            if (ele.getCapabilities().focusMode.includes('continuous')) {
-                h2.innerText = stream.getTracks()[index].label;
-                await accessCamera(ele.getCapabilities().deviceId)
+        try {
+            const devices = await navigator.mediaDevices.enumerateDevices();
+            const videoDevices = devices.filter(device => device.kind === 'videoinput');
+
+            console.log(videoDevices.length + ' câmeras disponíveis');
+
+            for (const device of videoDevices) {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: device.deviceId } });
+                const tracks = stream.getVideoTracks();
+                
+                for(const track of tracks){
+                    if (track && track.getCapabilities && track.getCapabilities().focusMode) {
+                        if (track.getCapabilities().focusMode.includes('continuous')) {
+                            console.log('Continuous focus mode is supported by device:', device.label);
+                            await accessCamera(device.deviceId);
+                            break; // Parar de verificar após encontrar uma câmera compatível
+                        }
+                    }
+                }
+                
             }
-        });
-
-        cam.append(h2)
-
+        } catch (error) {
+            console.error('Error checking continuous focus support: ', error);
+        }
     }
 
-    // Verificar se a câmera suporta focusMode contínuo antes de aplicar as constraints
-    await accessCamera();
+    // Chamar a função para acessar a câmera e verificar o suporte ao foco contínuo
     await checkContinuousFocusSupport();
 });
