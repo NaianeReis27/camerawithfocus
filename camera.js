@@ -39,14 +39,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (ele.getCapabilities().focusMode.includes('continuous')) {
                 console.log(ele.getCapabilities())
                 await accessCamera(ele.getCapabilities().deviceId)
+                return
             }
         });
 
     }
 
     // Verificar se a câmera suporta focusMode contínuo antes de aplicar as constraints
-
-
     await accessCamera();
     await checkContinuousFocusSupport();
 });
