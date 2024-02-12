@@ -16,7 +16,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (deviceId) {
                 constraints.video.deviceId = deviceId
             }
-            
+            devices = await navigator.mediaDevices.enumerateDevices();
+            console.log(devices)
+
             stream = await navigator.mediaDevices.getUserMedia(constraints);
             const tracks = stream.getTracks();
             console.log("stream2:"+ tracks)
@@ -29,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             videoElement.srcObject = stream;
             currentStream = stream;
-            
+
         } catch (error) {
             console.error('Error accessing media devices: ', error);
         }
@@ -43,10 +45,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         
         stream.getTracks().forEach(async (ele, index) => {
             if (ele.getCapabilities().focusMode.includes('continuous')) {
-                console.log(ele.getCapabilities().deviceId)
                 h2.innerText = stream.getTracks()[index].label;
                 await accessCamera(ele.getCapabilities().deviceId)
-                return
             }
         });
 
