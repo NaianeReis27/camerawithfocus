@@ -30,12 +30,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             // Se uma faixa com foco correto for encontrada, atualize cameraSelectId
             if (foundTracks.length > 0) {
-
                 const settings = {
                     focusMode: 'continuous'
                 };
-                await foundTracks.applyConstraints({ advanced: [settings] });
-                
+                await foundTracks[0].applyConstraints({ advanced: [settings] });
             }
 
             videoElement.srcObject = stream;
