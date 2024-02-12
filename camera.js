@@ -52,7 +52,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 track.forEach(ele => {
                     Object.entries(ele.getCapabilities()).forEach(([key, value]) => {
                         const li = document.createElement('li');
-                        li.textContent = `${key}: ${value}`;
+                        const valueString = typeof value === 'object' ? JSON.stringify(value) : value;
+                        li.textContent = `${key}: ${valueString}`;
                         ul2.appendChild(li);
                     });
                 });
