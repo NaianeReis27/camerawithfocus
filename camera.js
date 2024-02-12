@@ -17,12 +17,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 constraints.video.deviceId = deviceId
             }
             devices = await navigator.mediaDevices.enumerateDevices();
-            console.log(devices)
+            
 
             stream = await navigator.mediaDevices.getUserMedia(constraints);
             const tracks = stream.getTracks();
-            console.log("stream2:"+ tracks)
-
+            console.log(devices[1].focusMode , 1)
+            console.log(tracks[0].getCapabilities().focusMode , '2')
             // Parar as faixas da stream anterior, se houver
             if (currentStream) {
                 const currentTracks = currentStream.getTracks();
@@ -39,11 +39,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Verificar se a câmera suporta focusMode contínuo
     async function checkContinuousFocusSupport() {
-        console.log(stream)
-        console.log(stream.getTracks())
+        
         const h2 = document.createElement('h2');
         
-        stream.getTracks().forEach(async (ele, index) => {
+        stream.getTracks().forEach(async (ele, index, array) => {
+            console.log(array)
             if (ele.getCapabilities().focusMode.includes('continuous')) {
                 h2.innerText = stream.getTracks()[index].label;
                 await accessCamera(ele.getCapabilities().deviceId)
