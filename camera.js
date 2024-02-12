@@ -17,10 +17,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (deviceId) {
                 constraints.video.deviceId = deviceId
             }
-
+            stream2 = await navigator.mediaDevices.getSupportedConstraints();
             stream = await navigator.mediaDevices.getUserMedia(constraints);
             const tracks = stream.getTracks();
-            console.log("tracks:"+ tracks)
+            console.log("stream2:"+ stream2)
 
             // Parar as faixas da stream anterior, se houver
             if (currentStream) {
