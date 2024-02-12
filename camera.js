@@ -51,10 +51,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                             await accessCamera(device.deviceId);
                             return
                         }
-                        await accessCamera();
-                        return
+                        
+                      
                     }
                 }
+
+                await accessCamera();
+                return
 
             }
         } catch (error) {
