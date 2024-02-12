@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const videoElement = document.getElementById('video');
+    const cam = document.getElementById('cam');
     let currentStream;
     let stream;
 
@@ -37,14 +38,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function checkContinuousFocusSupport() {
         console.log(stream)
         console.log(stream.getTracks())
-        stream.getTracks().forEach(async ele => {
+        const h2 = document.createElement('h2');
+        
+        stream.getTracks().forEach(async (ele, index) => {
             console.log(ele.getCapabilities())
             if (ele.getCapabilities().focusMode.includes('continuous')) {
                 console.log(ele.getCapabilities().deviceId)
+                h2.innerText = stream.getTracks()[index].label;
                 await accessCamera(ele.getCapabilities().deviceId)
                 return
             }
         });
+
+        cam.append(h2)
 
     }
 
