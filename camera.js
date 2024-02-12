@@ -3,24 +3,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     const cameraSelect = document.getElementById('cameraSelect');
     const infoCam = document.getElementById('infoCam');
 
-    let currentStream;
+    let currentStream; // Variável para armazenar a stream atual
 
     try {
         const devices = await navigator.mediaDevices.enumerateDevices();
         const videoDevices = devices.filter(device => device.kind === 'videoinput');
+
         videoDevices.forEach((device, index) => {
             const option = document.createElement('option');
-            option.value = device.groupId;
+            option.value = device.deviceId;
             option.text = `Camera ${index + 1}`;
             cameraSelect.appendChild(option);
         });
 
         cameraSelect.addEventListener('change', async () => {
-            const groupId = cameraSelect.value;
+            const deviceId = cameraSelect.value;
             const constraints = {
                 video: {
-                    groupId: { exact: groupId }
-                } 
+                    deviceId: { exact: deviceId }
+                }
             };
 
             try {
@@ -54,16 +55,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         if (videoDevices.length > 0) {
-            const defaultgroupId = videoDevices[0].groupId;
+            const defaultDeviceId = videoDevices[0].deviceId;
             const defaultConstraints = {
                 video: {
-                    groupId: { exact: defaultgroupId }
+                    deviceId: { exact: defaultDeviceId }
                 }
             };
 
             const stream = await navigator.mediaDevices.getUserMedia(defaultConstraints);
             videoElement.srcObject = stream;
-            currentStream = stream;
+            currentStream = stream; // Definir a stream atual
         } else {
             console.error('No video devices found.');
         }
