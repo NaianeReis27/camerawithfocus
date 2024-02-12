@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const videoElement = document.getElementById('video');
     let cameraSelectId;
-    let currentStream; 
+    let currentStream;
 
     // Função para acessar a câmera com base nas restrições
     async function accessCamera() {
@@ -10,10 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 facingMode: 'environment'
             }
         }
-        if (cameraSelectId) {
-            constraints.video.deviceId = cameraSelectId;
-        }
-
+        
         try {
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
             const tracks = stream.getTracks();
@@ -32,17 +29,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             // Se uma faixa com foco correto for encontrada, atualize cameraSelectId
             if (foundTracks.length > 0) {
-                cameraSelectId = foundTracks[0].deviceId;
+                constraints.video.deviceId = cameraSelectId;
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
             }
 
             console.log(foundTracks);
             videoElement.srcObject = stream;
-            currentStream = stream; 
+            currentStream = stream;
         } catch (error) {
             console.error('Error accessing media devices: ', error);
         }
     }
 
-   
+
     await accessCamera();
 });
