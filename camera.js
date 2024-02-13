@@ -16,9 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 };
 
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
-                if (currentStream) {
-                    currentStream.getTracks().forEach(track => track.stop());
-                }
+                
 
                 const track = stream.getVideoTracks()[0];
                 const capabilities = track.getCapabilities();
@@ -33,6 +31,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                     currentStream = stream;
                 } else {
                     console.log("Câmera sem suporte para foco contínuo:", device.label);
+                }
+                
+                if (currentStream) {
+                    currentStream.getTracks().forEach(track => track.stop());
                 }
             }
 
