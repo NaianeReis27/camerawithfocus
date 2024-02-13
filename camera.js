@@ -12,11 +12,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             };
 
             if (deviceId) {
-                constraints.video.deviceId = { exact: deviceId };
+                constraints.video.deviceId = deviceId;
             }
 
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
-            console.log(stream.getTracks()[0].getCapabilities())
+            
             // Parar as faixas da stream anterior, se houver
             if (currentStream) {
                 currentStream.getTracks().forEach(track => {
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const devices = await navigator.mediaDevices.enumerateDevices();
             const videoDevices = devices.filter(device => device.kind === 'videoinput');
 
-            console.log(videoDevices.length + ' câmeras disponíveis');
+            console.log(videoDevices + 'câmeras disponíveis');
 
             for (const device of videoDevices) {
                 console.log(currentStream.getTracks()[0].getCapabilities())
