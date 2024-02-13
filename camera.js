@@ -17,24 +17,24 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
                 
-
                 const track = stream.getVideoTracks()[0];
                 const capabilities = track.getCapabilities();
-                console.log(stream.getVideoTracks())
-                console.log(capabilities.focusMode)
-                console.log(capabilities.facingMode)
+                
+                console.log("Stream Video Tracks:", stream.getVideoTracks());
+                console.log("Focus Mode:", capabilities.focusMode);
+                console.log("Facing Mode:", capabilities.facingMode);
 
-                if (capabilities.focusMode && capabilities.focusMode.includes('continuous') && capabilities.facingMode.includes('environment')) {
+                if (capabilities.focusMode && capabilities.facingMode &&
+                    capabilities.focusMode.includes('continuous') && 
+                    capabilities.facingMode.includes('environment')) {
                     console.log("Continuous focus mode is supported by device:", device.label);
                     console.log("Track capabilities:", capabilities);
                     videoElement.srcObject = stream;
                     currentStream = stream;
+                    break; // interrompe o loop após encontrar a primeira câmera compatível
                 } else {
                     console.log("Câmera sem suporte para foco contínuo:", device.label);
-                }
-                
-                if (currentStream) {
-                    currentStream.getTracks().forEach(track => track.stop());
+                    stream.getTracks().forEach(track => track.stop());
                 }
             }
 
