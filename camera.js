@@ -35,24 +35,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Verificar se a câmera suporta focusMode contínuo
     async function checkContinuousFocusSupport() {
         try {
-            const devices = await navigator.mediaDevices.enumerateDevices();
-            const videoDevices = devices.filter(device => device.kind === 'videoinput');
-            for (const device of videoDevices) {
-                const tracks = currentStream.getTracks();
-                for (const track of tracks) {
-                    console.log(track, "track")
-                    console.log(track.getCapabilities())
+
+
+            const tracks = currentStream.getTracks();
+            for (const track of tracks) {
+
+                if (track.getCapabilities().focusMode) {
                     if (track.getCapabilities().focusMode.includes('continuous') && track.getCapabilities().facingMode === "environment"
                     ) {
-                        console.log(track.getCapabilities())
+                        console.log(track.getCapabilities(), "passou")
                         console.log('Continuous focus mode is supported by device:', device.label);
                         await accessCamera(track.deviceId);
                         return
                     }
-
-
                 }
             }
+
             await accessCamera();
             return
         } catch (error) {
