@@ -20,18 +20,17 @@ document.addEventListener("DOMContentLoaded", async () => {
                     currentStream.getTracks().forEach(track => track.stop());
                 }
 
-
                 const track = stream.getVideoTracks()[0];
                 const capabilities = track.getCapabilities();
+                console.log(stream.getVideoTracks())
                 console.log(capabilities.focusMode)
                 console.log(capabilities.facingMode)
-                
+
                 if (capabilities.focusMode && capabilities.focusMode.includes('continuous') && capabilities.facingMode.includes('environment')) {
                     console.log("Continuous focus mode is supported by device:", device.label);
                     console.log("Track capabilities:", capabilities);
                     videoElement.srcObject = stream;
                     currentStream = stream;
-                    return; // Retorna após encontrar a primeira câmera com foco contínuo
                 } else {
                     console.log("Câmera sem suporte para foco contínuo:", device.label);
                 }
