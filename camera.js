@@ -11,15 +11,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             for (const device of videoDevices) {
                 const constraints = {
                     video: {
-                        deviceId: { exact: device.deviceId }
+                        deviceId: device.deviceId
                     }
                 };
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
                 if (currentStream) {
                     currentStream.getTracks().forEach(track => track.stop());
                 }
-                videoElement.srcObject = stream;
-                currentStream = stream;
+
 
                 const track = stream.getVideoTracks()[0];
                 const capabilities = track.getCapabilities();
@@ -27,6 +26,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (capabilities.focusMode && capabilities.focusMode.includes('continuous') && capabilities.facingMode === "environment") {
                     console.log("Continuous focus mode is supported by device:", device.label);
                     console.log("Track capabilities:", capabilities);
+                    videoElement.srcObject = stream;
+                    currentStream = stream;
                     return; // Retorna após encontrar a primeira câmera com foco contínuo
                 } else {
                     console.log("Câmera sem suporte para foco contínuo:", device.label);
