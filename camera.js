@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const videoElement = document.getElementById('video');
+    const camElement = document.getElementById('cam');
+
     let currentStream;
 
-    // Função para acessar a câmera com base nas restrições
     async function accessCamera() {
         try {
             const devices = await navigator.mediaDevices.enumerateDevices();
@@ -23,12 +24,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 console.log("Stream Video Tracks:", stream.getVideoTracks());
                 console.log("Focus Mode:", capabilities.focusMode);
                 console.log("Facing Mode:", capabilities.facingMode);
-
+                camElement.innerText = device.label;
                 if (capabilities.focusMode && capabilities.facingMode &&
                     capabilities.focusMode.includes('continuous') &&
                     capabilities.facingMode.includes('environment')) {
-                    console.log("Continuous focus mode is supported by device:", device.label);
-                    console.log("Track capabilities:", capabilities);
+                    console.log("camera suporta focusMode == 'continuous':", device.label);
                     videoElement.srcObject = stream;
                     currentStream = stream;
                     return
