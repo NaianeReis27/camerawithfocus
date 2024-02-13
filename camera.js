@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 for (const track of tracks) {
 
-                    if (track && track.getCapabilities() && track.getCapabilities().focusMode) {
+                    if (track.getCapabilities().focusMode) {
                         console.log(track.getCapabilities())
                         if (track.getCapabilities().focusMode.includes('continuous') && track.getCapabilities().facingMode === "environment"
                         ) {
