@@ -3,23 +3,40 @@ document.addEventListener("DOMContentLoaded", async () => {
     let currentStream;
 
     // Função para acessar a câmera com base nas restrições
-    async function accessCamera(deviceId) {
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        const videoDevices = devices.filter(device => device.kind === 'videoinput');
+    async function accessCamera() {
+        try {
+            const devices = await navigator.mediaDevices.enumerateDevices();
+            const videoDevices = devices.filter(device => device.kind === 'videoinput');
 
-        for (const device of videoDevices) {
-            const constraints = {
-                video: {
-                    deviceId: { exact: device.deviceId }
-                }
-            };
-            try {
+            for (const device of videoDevices) {
+                const constraints = {
+                    video: {
+                        deviceId: { exact: device.deviceId }
+                    }
+                };
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
-                console.log(stream.getTracks()[0].getCapabilities().focusMode)
-                console.log("Câmera com foco contínuo encontrada:", device.label);
-            } catch (error) {
-                console.error("Erro ao acessar a câmera:", error);
+                if (currentStream) {
+                    currentStream.getTracks().forEach(track => track.stop());
+                }
+                videoElement.srcObject = stream;
+                currentStream = stream;
+
+                const track = stream.getVideoTracks()[0];
+                const capabilities = track.getCapabilities();
+                console.log(capabilities)
+                if (capabilities.focusMode && capabilities.focusMode.includes('continuous') && capabilities.facingMode === "environment") {
+                    console.log("Continuous focus mode is supported by device:", device.label);
+                    console.log("Track capabilities:", capabilities);
+                    return; // Retorna após encontrar a primeira câmera com foco contínuo
+                } else {
+                    console.log("Câmera sem suporte para foco contínuo:", device.label);
+                }
             }
+
+            // Se não houver nenhuma câmera com foco contínuo
+            console.log("Nenhuma câmera com foco contínuo encontrada.");
+        } catch (error) {
+            console.error("Erro ao acessar a câmera:", error);
         }
     }
 
