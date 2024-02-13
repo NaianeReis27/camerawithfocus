@@ -23,8 +23,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 const track = stream.getVideoTracks()[0];
                 const capabilities = track.getCapabilities();
-                console.log(capabilities)
-                if (capabilities.focusMode && capabilities.focusMode.includes('continuous') && capabilities.facingMode.includes("environment")) {
+                console.log(capabilities.focusMode)
+                if (capabilities.focusMode && capabilities.focusMode.includes('continuous')) {
                     console.log("Continuous focus mode is supported by device:", device.label);
                     console.log("Track capabilities:", capabilities);
                     videoElement.srcObject = stream;
