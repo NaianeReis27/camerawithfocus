@@ -36,11 +36,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function checkContinuousFocusSupport() {
         try {
             const tracks = currentStream.getTracks();
-            console.log(tracks)
-            for (const track of tracks) {
+            const devices = await navigator.mediaDevices.enumerateDevices();
+            const videoDevices = devices.filter(device => device.kind === 'videoinput');
 
+            console.log(videoDevices[0].getCapabilities(), 'enumerateDevices', videoDevices.length)
+            console.log(tracks[0].getCapabilities() , 'mediaDevices', tracks.length);
 
-                if (track.getCapabilities().focusMode) {
+            for (const device of videoDevices) {
+                
+                for (const track of tracks) {
                     if (track.getCapabilities().focusMode.includes('continuous') && track.getCapabilities().facingMode === "environment"
                     ) {
                         console.log(track.getCapabilities(), "passou")
@@ -48,9 +52,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                         await accessCamera(track.deviceId);
                         return
                     }
+
+
                 }
             }
-
             await accessCamera();
             return
         } catch (error) {
