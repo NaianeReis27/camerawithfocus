@@ -38,12 +38,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             const devices = await navigator.mediaDevices.enumerateDevices();
             const videoDevices = devices.filter(device => device.kind === 'videoinput');
 
-            console.log(videoDevices + 'câmeras disponíveis');
+            
 
             for (const device of videoDevices) {
-                console.log(currentStream.getTracks()[0].getCapabilities())
-                const tracks = currentStream.getTracks();
                 
+                const tracks = currentStream.getTracks();
+                console.log(tracks, 'f')
 
                 for (const track of tracks) {
                     
