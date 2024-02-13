@@ -8,20 +8,22 @@ document.addEventListener("DOMContentLoaded", async () => {
         const videoDevices = devices.filter(device => device.kind === 'videoinput');
 
         for (const device of videoDevices) {
-
             const constraints = {
                 video: {
-                    videoId: {exact: device.deviceId}
+                    deviceId: { exact: device.deviceId }
                 }
+            };
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                console.log(stream.getTracks()[0].getCapabilities().focusMode)
+                console.log("Câmera com foco contínuo encontrada:", device.label);
+                // Faça algo com a câmera encontrada aqui, se necessário
+                break; // Interrompe o loop após encontrar a primeira câmera
+            } catch (error) {
+                console.error("Erro ao acessar a câmera:", error);
             }
-            
-            const stream = await navigator.mediaDevices.getUserMedia(constraints);
-            console.log(stream.getTracks()[0].getCapabilities())
-            
         }
-        
     }
 
     await accessCamera();
-    
 });
