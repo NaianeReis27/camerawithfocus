@@ -16,13 +16,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
-            
+
             // Parar as faixas da stream anterior, se houver
             if (currentStream) {
                 currentStream.getTracks().forEach(track => {
                     track.stop()
                 });
-                
+
             }
 
             videoElement.srcObject = stream;
@@ -38,16 +38,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             const devices = await navigator.mediaDevices.enumerateDevices();
             const videoDevices = devices.filter(device => device.kind === 'videoinput');
 
-            
+
 
             for (const device of videoDevices) {
-                
+
                 const tracks = currentStream.getVideoTracks();
                 console.log(tracks, 'lista de tracks disponiveis no device')
 
                 for (const track of tracks) {
-                    
-                    if (track && track.getCapabilities && track.getCapabilities().focusMode) {
+
+                    if (track && track.getCapabilities() && track.getCapabilities().focusMode) {
                         console.log(track.getCapabilities())
                         if (track.getCapabilities().focusMode.includes('continuous') && track.getCapabilities().facingMode === "environment"
                         ) {
@@ -56,14 +56,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                             await accessCamera(track.deviceId);
                             return
                         }
-                        
+
                     }
                 }
-
-                await accessCamera();
-                return
-
             }
+            await accessCamera();
+            return
         } catch (error) {
             console.error('Error checking continuous focus support: ', error);
         }
