@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         deviceId: device.deviceId
                     }
                 };
+
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
                 if (currentStream) {
                     currentStream.getTracks().forEach(track => track.stop());
@@ -23,7 +24,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const track = stream.getVideoTracks()[0];
                 const capabilities = track.getCapabilities();
                 console.log(capabilities)
-                if (capabilities.focusMode && capabilities.focusMode.includes('continuous') && capabilities.facingMode === "environment") {
+                if (capabilities.focusMode && capabilities.focusMode.includes('continuous') && capabilities.facingMode.includes("environment")) {
                     console.log("Continuous focus mode is supported by device:", device.label);
                     console.log("Track capabilities:", capabilities);
                     videoElement.srcObject = stream;
