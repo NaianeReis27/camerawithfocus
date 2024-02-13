@@ -16,10 +16,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
-
+            console.log(stream.getTracks()[0].getCapabilities())
             // Parar as faixas da stream anterior, se houver
             if (currentStream) {
-                currentStream.getTracks().forEach(track => track.stop());
+                currentStream.getTracks().forEach(track => {
+                    track.stop()
+                });
+                
             }
 
             videoElement.srcObject = stream;
@@ -38,8 +41,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.log(videoDevices.length + ' câmeras disponíveis');
 
             for (const device of videoDevices) {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: { exact: device.deviceId } } });
-                const tracks = stream.getVideoTracks();
+                console.log(currentStream.getTracks()[0].getCapabilities())
+                const tracks = currentStream.getTracks();
+                
 
                 for (const track of tracks) {
                     
@@ -53,7 +57,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                             return
                         }
                         
-                      
                     }
                 }
 
@@ -66,5 +69,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
     // Chamar a função para acessar a câmera e verificar o suporte ao foco contínuo
+    await accessCamera();
     await checkContinuousFocusSupport();
 });
