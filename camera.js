@@ -17,8 +17,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
                 console.log(stream.getTracks()[0].getCapabilities().focusMode)
                 console.log("Câmera com foco contínuo encontrada:", device.label);
-                // Faça algo com a câmera encontrada aqui, se necessário
-                break; // Interrompe o loop após encontrar a primeira câmera
             } catch (error) {
                 console.error("Erro ao acessar a câmera:", error);
             }
