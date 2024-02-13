@@ -6,14 +6,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function accessCamera(deviceId) {
         try {
             const constraints = {
-                video: {
-                    facingMode: 'environment'
-                }
+                video: true
             };
-
-            if (deviceId) {
-                constraints.video.deviceId = deviceId;
-            }
 
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
 
@@ -44,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.log(videoDevices[2].getCapabilities(), 'enumerateDevices', videoDevices.length)
             console.log(videoDevices[3].getCapabilities(), 'enumerateDevices', videoDevices.length)
             console.log(tracks[0].getCapabilities() , 'mediaDevices', tracks.length);
-
+            console.log(navigator.mediaDevices())
             for (const device of videoDevices) {
                 
                 for (const track of tracks) {
