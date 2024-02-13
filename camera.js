@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             for (const device of videoDevices) {
                 
                 const tracks = currentStream.getVideoTracks();
-                console.log(tracks, 'f')
+                console.log(tracks, 'lista de tracks disponiveis no device')
 
                 for (const track of tracks) {
                     
