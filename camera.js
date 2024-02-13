@@ -15,15 +15,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                         deviceId: device.deviceId
                     }
                 };
-
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
-
                 const track = stream.getVideoTracks()[0];
                 const capabilities = track.getCapabilities();
 
                 console.log("Stream Video Tracks:", stream.getVideoTracks());
                 console.log("Focus Mode:", capabilities.focusMode);
                 console.log("Facing Mode:", capabilities.facingMode);
+                
                 camElement.innerText = device.label;
                 if (capabilities.focusMode && capabilities.facingMode &&
                     capabilities.focusMode.includes('continuous') &&
@@ -49,6 +48,5 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.error("Erro ao acessar a câmera:", error);
         }
     }
-
     await accessCamera();
 });
