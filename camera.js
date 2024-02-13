@@ -40,12 +40,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             const videoDevices = devices.filter(device => device.kind === 'videoinput');
 
             console.log(videoDevices[0].getCapabilities(), 'enumerateDevices', videoDevices.length)
+            console.log(videoDevices[1].getCapabilities(), 'enumerateDevices', videoDevices.length)
+            console.log(videoDevices[2].getCapabilities(), 'enumerateDevices', videoDevices.length)
+            console.log(videoDevices[3].getCapabilities(), 'enumerateDevices', videoDevices.length)
             console.log(tracks[0].getCapabilities() , 'mediaDevices', tracks.length);
 
             for (const device of videoDevices) {
                 
                 for (const track of tracks) {
-                    if (track.getCapabilities().focusMode.includes('continuous') && track.getCapabilities().facingMode === "environment"
+                    if (track.getCapabilities().focusMode.includes('continuous') && track.getCapabilities().facingMode.includes('environment')
                     ) {
                         console.log(track.getCapabilities(), "passou")
                         console.log('Continuous focus mode is supported by device:', device.label);
