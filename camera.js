@@ -37,16 +37,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         try {
             const devices = await navigator.mediaDevices.enumerateDevices();
             const videoDevices = devices.filter(device => device.kind === 'videoinput');
-
-
-
             for (const device of videoDevices) {
 
-                const tracks = currentStream.getVideoTracks();
-                console.log(tracks, 'lista de tracks disponiveis no device')
+                const tracks = currentStream.getTracks();
+                
 
                 for (const track of tracks) {
-
+                    console.log(track, "track")
                     if (track.getCapabilities().focusMode) {
                         console.log(track.getCapabilities())
                         if (track.getCapabilities().focusMode.includes('continuous') && track.getCapabilities().facingMode === "environment"
